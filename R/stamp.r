@@ -97,7 +97,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   
   res1 <- res[!sapply(res, is.null)]
   pD1 <- NULL
-  if (!is.null(res1)){
+  if (length(res1)>0){
     out1 <- do.call("rbind", res1)
     pD1 <- SpatialPolygonsDataFrame(as(out1,"SpatialPolygons"), data=dfD1, match.ID = FALSE)
     pD1$LEV1 <- "DISA"
@@ -125,7 +125,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   
   res1 <- res[!sapply(res, is.null)]
   pD2 <- NULL
-  if (!is.null(res1)){
+  if (length(res1)>0){
     out1 <- do.call("rbind", res1)
     pD2 <- SpatialPolygonsDataFrame(as(out1,"SpatialPolygons"), data=dfD2, match.ID = FALSE)
     pD2$LEV1 <- "GENR"
@@ -210,7 +210,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   stmp@data <- stmp@data[,-5]
   #sort by group column
   stmp <- stmp[order(stmp$GROUP),]
-  #rename FID's
+  #rename FID's - This can still throw an error...
   stmp <- spChFIDs(stmp,as.character(seq(0,(length(stmp)-1))))
   #Create a polygon area column
   stmp$AREA <- gArea(stmp,byid=TRUE)
