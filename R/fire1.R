@@ -12,9 +12,15 @@
 #' @format \code{fire1} --- a \code{SpatialPolygonsDataFrame} with polygons representing the location of forest fire. 
 #' @name fire1
 #' @examples
-#' library(sp)
+#' 
 #' data(fire1)
-#' data(fire2)
 #' plot(fire1)
-#' plot(fire2,border=2,add=TRUE)
+#' 
+#' data(fire2)
+#' plot(fire2)
+#' 
+#' \dontrun{
+#' library(mapview)
+#' mapview(fire1) + mapview(fire2)
+#' }
 NULL

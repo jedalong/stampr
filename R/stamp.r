@@ -3,7 +3,7 @@
 #' @title Spatial temporal analysis of moving polygons
 #'
 #' @description
-#' This function generates a \code{SpatialPolygonsDataFrame} that can be used for spatial temporal analysis of moving polygons
+#' This function generates a \code{sf} polygons object that can be used for spatial temporal analysis of moving polygons
 #' as described in the paper Robertson et al. (2007).
 #'
 #' @details
@@ -27,10 +27,10 @@
 #'  See Robertson et al. (2007; especially Figure 1) for complete descriptions of all STAMP movement
 #'  event types.
 #'  
-#'  Note also that there must be a globally unique \code{ID} column in each data frame passed to the stamp function
+#'  Note also that there must be a unique ID of each polygon, the function uses the row.names of the polygon objects. Modify the row.names accordingly if you wish to use an alternative ID label.
 #'
-#' @param T1 a \code{SpatialPolygonsDataFrame} object of polygons from time 1.
-#' @param T2 a \code{SpatialPolygonsDataFrame} object of polygons from time 2.
+#' @param T1 a \code{sf} polygons object of polygons from time 1.
+#' @param T2 a \code{sf} polygons object of polygons from time 2.
 #' @param dc spatial distance threshold for determining groupings (see \bold{Details}) in appropriate units.
 #' @param direction logical, whether or not to perform directional analysis. See documentation for
 #'    \code{stamp.direction} for further details.
@@ -41,7 +41,7 @@
 #'
 #'
 #' @return
-#'  This function returns a \code{SpatialPolygonsDataFrame} with the following data columns:
+#'  This function returns a \code{sf} polygons object with the following data columns:
 #'  \item{ID1}{Polygon ID from T1 polygons; \code{NA} if it did not exist,}
 #'  \item{ID2}{Polygon ID from T2 polygons; \code{NA} if it did not exist,}
 #'  \item{LEV1}{Level 1 STAMP designation,}
@@ -59,108 +59,65 @@
 #'  \emph{Journal of Geographical Systems}, 9:207-227.
 #'
 #' @keywords stamp
-#' @seealso stamp.direction stamp.distance stamp.shape stamp.map stamp.group.summary
+#' @seealso stamp.direction stamp.distance stamp.map stamp.group.summary
 #' @export
 #
 # ---- End of Documentation ----
 
 stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){ 
+  
+  #T1 <- fire1
+  #T2 <- fire2
   # intersection b/w T1 and T2
-  if (!exists("ID", T1@data))
-      stop("Need a unique 'ID' column.")
+  #row.names(T1) <- paste0("1_",row.names(T1))
+  #row.names(T2) <- paste0("2_",row.names(T2))
   
-  if (!exists("ID", T2@data))
-    stop("Need a unique 'ID' column.")
+  T1$id1 = row.names(T1)
+  T2$id2 = row.names(T2)
   
-  row.names(T1) <- as.character(T1$ID)
-  row.names(T2) <- as.character(T2$ID)
-  pI <- gIntersection(T1,T2,byid=TRUE,drop_lower_td=TRUE)
+  pI <- suppressWarnings(st_intersection(T1,T2))
+  
   if (!is.null(pI)){
-    #this assumes row numbers are numeric
-    dfI <- data.frame(matrix(as.numeric(unlist(sapply(row.names(pI),strsplit, " "))),ncol=2, byrow=TRUE))
-    names(dfI) <- c("ID1","ID2")
-    #dfI <- dfI[complete.cases(dfI),]
-    pI <- SpatialPolygonsDataFrame(pI,data=dfI,match.ID=FALSE)
     pI$LEV1 <- "STBL"
-    row.names(pI) <- paste("STBL",seq(1:length(pI)),sep="")
+    row.names(pI) <- paste0("STBL",seq(1:nrow(pI)))
   } 
   
-  #T1 difference
-  res <- vector(mode="list", length=length(slot(T1, "polygons")))
-  dfD1 <- data.frame(ID1 = rep(NA,length(T1)),ID2 = rep(NA,length(T1)))
-  #This is slow, can we improve?
-  for (i in seq(along=res)) {
-    gd <- gDifference(T1[i,],T2,drop_lower_td=TRUE)
-    res[[i]] <- gd 
-    if (!is.null(gd)){                                          
-      row.names(res[[i]]) <- paste(i, row.names(res[[i]]), sep="_")    #I don't know what exactly this does?
-      dfD1[i,1] <- as.numeric(row.names(T1[i,]))
-    }
-  }
-  #Get rid of problem scenarios
-  ind <- which(is.na(dfD1$ID1) & is.na(dfD1$ID2))
-  if (length(ind) > 0){
-    dfD1 <- dfD1[-ind,]
-  }
-  
-  res1 <- res[!sapply(res, is.null)]
-  pD1 <- NULL
-  #if (!is.null(res1)){
-  if (length(res1)>0){
-    out1 <- do.call("rbind", res1)
-    pD1 <- SpatialPolygonsDataFrame(as(out1,"SpatialPolygons"), data=dfD1, match.ID = FALSE)
-    pD1$LEV1 <- "DISA"
-    row.names(pD1) <- paste("DISA",seq(1:length(pD1)),sep="")
-  }
-  
-  #T2 difference
-  res <- vector(mode="list", length=length(slot(T2, "polygons")))
-  dfD2 <- data.frame(ID1 = rep(NA,length(T2)),ID2 = rep(NA,length(T2)))
-  #This is slow, can we improve?
-  for (i in seq(along=res)) {
-    gd <- gDifference(T2[i,],T1,drop_lower_td=TRUE)
-    res[[i]] <- gd
-    if (!is.null(gd)){                                          
-      row.names(res[[i]]) <- paste(i, row.names(res[[i]]), sep="_")    #I don't know what exactly this does?
-      dfD2[i,2] <- as.numeric(row.names(T2[i,]))
-    }
-  }
-  #Get rid of problem scenarios
-  ind <- which(is.na(dfD2$ID1) & is.na(dfD2$ID2))
-  if (length(ind) > 0){
-    dfD2 <- dfD2[-ind,]
-  }
+  #T1 and T2 difference
+  # A helper function that erases all of y from x:
+  st_erase = function(x, y) {st_difference(x, st_union(st_combine(y)))}
   
   
-  res1 <- res[!sapply(res, is.null)]
-  pD2 <- NULL
-  #if (!is.null(res1)){
-  if (length(res1) > 0){
-    out1 <- do.call("rbind", res1)
-    pD2 <- SpatialPolygonsDataFrame(as(out1,"SpatialPolygons"), data=dfD2, match.ID = FALSE)
-    pD2$LEV1 <- "GENR"
-    row.names(pD2) <- paste("GENR",seq(1:length(pD2)),sep="")
-  }
+  gd1 <- suppressWarnings(st_erase(T1,T2))
+  gd1$LEV1 <- "DISA"
+  gd1$id2 <- NA
+  row.names(gd1) <- paste0("DISA",seq(1:nrow(gd1)))
+  
+  gd2 <- suppressWarnings(st_erase(T2,T1))
+  gd2$LEV1 <- "GENR"
+  gd2$id1 <- NA
+  row.names(gd2) <- paste0("GENR",seq(1:nrow(gd2)))
+  
   
   #Piece them together
-  stmp <- do.call('rbind',c(pD1,pI,pD2))
+  cols <- c('id1','id2','LEV1')
+  stmp <- rbind(gd1[,cols],pI[,cols],gd2[,cols])
   
   #assign event types ---
   stmp$LEV2 <- stmp$LEV1
 
   #get contraction events
-  id.stab1 <- unique(stmp$ID1[which(stmp$LEV1 == "STBL")])
-  stmp$LEV2[which(stmp$LEV1 == "DISA" & stmp$ID1 %in% id.stab1)] <- "CONT"
+  id.stab1 <- unique(stmp$id1[which(stmp$LEV1 == "STBL")])
+  stmp$LEV2[which(stmp$LEV1 == "DISA" & stmp$id1 %in% id.stab1)] <- "CONT"
 
   #get expansion events
-  id.stab2 <- unique(stmp$ID2[which(stmp$LEV1 == "STBL")])
-  stmp$LEV2[which(stmp$LEV1 == "GENR" & stmp$ID2 %in% id.stab2)] <- "EXPN"
+  id.stab2 <- unique(stmp$id2[which(stmp$LEV1 == "STBL")])
+  stmp$LEV2[which(stmp$LEV1 == "GENR" & stmp$id2 %in% id.stab2)] <- "EXPN"
 
   #Delineate contiguous bases for groups
   stmp$TMP <- 1
   if(length(stmp) > 1) {
   nbl <- poly2nb(stmp)
-  for(i in 1:length(stmp)) {
+  for(i in 1:nrow(stmp)) {
     nbl[[i]] <- c(unlist(nbl[i]), i)
     }
   stmp$TMP <- n.comp.nb(nbl)$comp.id
@@ -173,9 +130,9 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
     #find D of all appropriate polys
     dists <- vector(length=length(stmp), mode="numeric")
     dists[] <- NA
-    for(j in 1:length(stmp)) {
+    for(j in 1:nrow(stmp)) {
       #Do not include nearest GEN-GEN or DIS-DIS as they do not change names
-      if (stmp$LEV2[i] != stmp$LEV2[j]){dists[j] <- gDistance(stmp[j,], stmp[i,])}
+      if (stmp$LEV2[i] != stmp$LEV2[j]){dists[j] <- st_distance(stmp[j,], stmp[i,])}
       }
     #sort by D then extract if below dc value
     if (min(dists,na.rm=T) <= dc){
@@ -206,7 +163,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
     stmp$TMP[which(stmp$TMP == grps[i])] <- i
     }
   #Label Groups with Multi-Stable events as union or division
-  stmp$LEV4 <- 'N/A'
+  stmp$LEV4 <- NA
   for (grp in unique(stmp$TMP)){
     ind <- which(stmp$TMP == grp & stmp$LEV3 == "STBL")
     ind.grp <- which(stmp$TMP == grp)
@@ -219,14 +176,16 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
 
   #Delete TMP column and make a GROUP column
   stmp$GROUP <- stmp$TMP
-  stmp@data <- stmp@data[,-5]
+
   #sort by group column
   stmp <- stmp[order(stmp$GROUP),]
   #rename FID's
-  stmp <- spChFIDs(stmp,as.character(seq(0,(length(stmp)-1))))
+  #stmp <- spChFIDs(stmp,as.character(seq(0,(length(stmp)-1))))
   #Create a polygon area column
-  stmp$AREA <- gArea(stmp,byid=TRUE)
-
+  stmp$AREA <- st_area(stmp,by_element=TRUE)
+  
+  #Choose columns to keep
+  stmp <- stmp[,c('AREA','id1','id2','LEV1','LEV2','LEV3','LEV4','GROUP')]
   #directional analysis
   if (direction==TRUE){stmp <- stamp.direction(stmp,...)}
   #distance analysis

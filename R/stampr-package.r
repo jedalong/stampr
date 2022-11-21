@@ -19,8 +19,8 @@
 #' Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons.
 #'  \emph{Journal of Geographical Systems}, 9:207-227.
 #'
-#' @import sp rgeos maptools spdep rgdal deldir raster grDevices methods
-#' @importFrom stats optim
+#' @import sf lwgeom spdep  grDevices methods
+# @importFrom stats optim
 #' @docType package
 #' @name stampr-package
 NULL

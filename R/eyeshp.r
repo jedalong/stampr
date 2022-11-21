@@ -10,12 +10,11 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @format A \code{SpatialPointsDataFrame} with 33 records of of the location of Hurricane Katrina, every 
+#' @format A \code{sf} object with 33 records of the eye location of Hurricane Katrina, every 
 #'  3 hrs, from 21:00 25-AUG-2005 to 21:00 29-AUG-2005. The date and time of each polygon is recorded in the
 #'  column \code{DateTime}.
 #' @name eyeshp
 #' @examples
-#' library(sp)
-#' data("eyeshp")
+#' data(eyeshp)
 #' plot(eyeshp)
 NULL

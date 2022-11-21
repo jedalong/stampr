@@ -11,17 +11,18 @@
 #'  are those in the \code{katrina} data, where each time period is a row, and rows are time-ordered, and the structure of 
 #'  the \code{mpb} data, where time period is specified by a column. Time periods should be ordered from 1 through T.
 #'
-#' @param polys a \code{SpatialPolygonsDataFrame} wiht 2+ years of data to run through the \code{stamp} function.
+#' @param polys a \code{sf} polygon object with 2+ years of data to run through the \code{stamp} function.
 #' @param changeByRow logical, whether or not each time period is a separate unique row of data (e.g., as per the \code{katrina} data)
-#' @param changeByField logical, whether or not time period data is given by a specific field. If this is TRUE, changeByRow should be false
-#' @param changeField string, name of the field which contains time period if changeByField is TRUE
+#' @param changeField string, name of the field which contains time period if changeByRow is fALSE
 #' @param ... list of paramater values to provide to the \code{stamp} function
 #'
 #' @return
-#'  A \code{SpatialPolygonsDataFrame} which includes all outputs from the calls to the \code{stamp} function. If there are T time periods,
-#'  there will be T-1 time periods in the resulting \code{SpatialPolygonsDataFrame} object.
+#'  A \code{sf} object which includes all outputs from the calls to the \code{stamp} function. If there are T time periods,
+#'  there will be T-1 time periods in the resulting \code{sf} object.
 #'
 #' @keywords stamp
+#' @seealso stamp.stgroup.summary
+#' 
 #' @examples
 #' library(sp)
 #' data("katrina")
@@ -34,32 +35,33 @@
 #
 # ---- End of roxygen documentation ----
 
-stamp.multichange <- function(polys, changeByRow=TRUE, changeByField = FALSE, changeField="", ...) {
-  outEvents <- list()
+stamp.multichange <- function(polys, changeByRow=TRUE, changeField="", ...) {
   lSum <- 1
   if(changeByRow==TRUE) {
-    for(i in 1:(nrow(polys@data)-1)) {
+    for(i in 1:(nrow(polys)-1)) {
       Ti <- polys[i,]
       Ti_1 <- polys[i+1,]
       ch <- stamp(Ti, Ti_1, ...)
-      xx1 <- spChFIDs(ch, paste(i, "-", as.character((lSum):(lSum+length(ch)-1)), sep=""))
-      lSum <- length(ch) + lSum
-      outEvents[[i]] <- xx1 #@data
+      row.names(ch) <-  paste(i, "-", as.character((lSum):(lSum+nrow(ch)-1)), sep="")
+      lSum <- lSum + nrow(ch)
+      
+      if (i == 1){outEvents <- ch} else {outEvents <- rbind(outEvents,ch)}
     } 
-  }
-  if(changeByField == TRUE) {
+  } else {
+    #Change by Field
     #polys$ID <- 1:(length(polys@data[,changeField]))
-    for(i in 1:(length(unique(polys@data[,changeField]))-1)) {
-      Ti <- subset(polys, polys@data[,changeField] == unique(sort(polys@data[,changeField]))[i])
-      Ti_1 <- subset(polys, polys@data[,changeField] == unique(sort(polys@data[,changeField]))[i+1])
+    tgrps <- unique(polys[,changeField])
+    for(i in 1:(length(tgrps)-1)) {
+      Ti <- subset(polys, polys[,changeField] == tgrps[i])
+      Ti_1 <- subset(polys, polys[,changeField] == tgrps[i+1])
       ch <- stamp(Ti, Ti_1, ...)
-      xx1 <- spChFIDs(ch, paste(i, "-", as.character((lSum):(lSum+length(ch)-1)), sep=""))
-      lSum <- length(ch) + lSum
-      outEvents[[i]] <- xx1 #@data
+      row.names(ch) <-  paste(i, "-", as.character((lSum):(lSum+nrow(ch)-1)), sep="")
+      lSum <- lSum + nrow(ch)
+      
+      if (i == 1){outEvents <- ch} else {outEvents <- rbind(outEvents,ch)}
     } 
   }
   
-  outEvents <- do.call("rbind", outEvents)
   grps <- row.names(outEvents) #get row names
   outEvents$TGROUP <- substr(grps, 1, as.numeric(unlist(lapply(strsplit(grps, ''), function(x) which(x == '-'))))-1) #extract time period to distinguish change time periods
   outEvents$STGROUP <- as.numeric(paste(outEvents$TGROUP,outEvents$GROUP, sep="")) #generate 

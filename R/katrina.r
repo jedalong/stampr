@@ -20,14 +20,11 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @format A \code{SpatialPolygonsDataFrame} with 33 records of of the location of Hurricane Katrina, every 
+#' @format A \code{sf} object with 33 records of of the location of Hurricane Katrina, every 
 #'  3 hrs, from 21:00 25-AUG-2005 to 21:00 29-AUG-2005. The date and time of each polygon is recorded in the
 #'  column \code{DateTime}.
 #' @name katrina
 #' @examples
-#' library(sp)
 #' data(katrina)
-#' plot(katrina, border=1:33)
-#' T1 <- katrina[1,]
-#' plot(T1, col=1, add=TRUE)
+#' plot(katrina['Id'])
 NULL

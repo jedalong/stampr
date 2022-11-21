@@ -12,7 +12,7 @@
 #'  both \code{area} and \code{count} are set to \code{FALSE}, \code{stamp.group.summary} returns a
 #'  \code{data.frame} with just the group IDs as the only column.
 #'
-#' @param stmp a \code{SpatialPolygonsDataFrame} generated from the \code{stamp} function.
+#' @param stmp a \code{sf} object generated from the \code{stamp} function.
 #' @param area logical, whether or not to compute the STAMP event areas.
 #' @param count logical, whether or not to compute the count of STAMP evets within each group.
 #'
@@ -32,7 +32,7 @@ stamp.group.summary <- function(stmp,area=TRUE,count=TRUE){
   for (i in grps){
       ind1 <- which(stmp$GROUP == i)
       outdf$nEVENTS[i] <- length(ind1)
-      outdf$AREA[i] <- sum(stmp$AREA[ind1])
+      outdf$AREA[i] <- sum(st_area(stmp[ind1,]))
       }
   if (count==TRUE){
     nevnts <- paste("n",evnts,sep="")
@@ -52,7 +52,7 @@ stamp.group.summary <- function(stmp,area=TRUE,count=TRUE){
       ind1 <- which(stmp$GROUP == i)
       for (j in 1:length(evnts)){
         ind <- which(stmp$GROUP == i & stmp$LEV3 == evnts[j])
-        if (length(ind) > 0){ outdf[i,aevnts[j]] <- sum(stmp$AREA[ind]) }
+        if (length(ind) > 0){ outdf[i,aevnts[j]] <- sum(st_area(stmp[ind,])) }
         }
       }
     }

@@ -3,27 +3,29 @@
 #' @title Compile stamp summary statistics by space-time group
 #'
 #' @description
-#'  The function \code{stamp.stgroup.summary} compiles summary statistics for each STAMP grouping.
+#'  The function \code{stamp.stgroup.summary} compiles summary statistics for each STAMP space-time grouping.
 #'  Specifically, it computes the area of each STAMP event type (e.g., generation, expansion, etc.)
-#'  within each grouping. It also computes the number of events belonging to each event type.
+#'  within each grouping. It also computes the number of events belonging to each event type. 
 #'
 #' @details
-#'  \code{stamp.group.summary} computes area and count summary statistics of STAMP output. Note that if
-#'  both \code{area} and \code{count} are set to \code{FALSE}, \code{stamp.group.summary} returns a
+#'  \code{stamp.stgroup.summary} computes area and count summary statistics of STAMP output derived from multi-time analysis using stamp.multichange.
+#'  stamp.multichange is just a wrapper function for applying stamp to multiple time periods in the same dataset. Note that if
+#'  both \code{area} and \code{count} are set to \code{FALSE}, \code{stamp.stgroup.summary} returns a
 #'  \code{data.frame} with just the stgroup IDs as the only column.
 #'
-#' @param stmp a \code{SpatialPolygonsDataFrame} generated from the \code{stamp} function.
+#' @param stmp a \code{sf} polygon object generated from the \code{stamp.multichange} function.
 #' @param area logical, whether or not to compute the STAMP event areas.
-#' @param count logical, whether or not to compute the count of STAMP evets within each group.
+#' @param count logical, whether or not to compute the count of STAMP events within each group.
 #'
 #' @return
 #'  A \code{data.frame} where rows are stamp groups and columns correspond to the STAMP event types (ID, areas, and counts).
 #'
 #' @keywords stamp
+#' 
+#' @seealso stamp.multichange
 #' @examples
-#' library(sp)
+#' library(sf)
 #' data("katrina")
-#' katrina$ID <- katrina$Id
 #' ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 #' STGroup <- stamp.stgroup.summary(ch)
 #' head(STGroup)
@@ -40,7 +42,7 @@ stamp.stgroup.summary <- function(stmp,area=TRUE,count=TRUE){
   for (i in 1:length(grps)){
       ind1 <- which(stmp$STGROUP == grps[i])
       outdf$nEVENTS[i] <- length(ind1)
-      outdf$AREA[i] <- sum(stmp$AREA[ind1])
+      outdf$AREA[i] <- sum(st_area(stmp[ind1,]))
       outdf$TGROUP[i] <- min(stmp$TGROUP[ind1])
       }
   if (count==TRUE){
@@ -61,7 +63,7 @@ stamp.stgroup.summary <- function(stmp,area=TRUE,count=TRUE){
       ind1 <- which(stmp$STGROUP == grps[i])
       for (j in 1:length(evnts)){
         ind <- which(stmp$STGROUP == grps[i] & stmp$LEV3 == evnts[j])
-        if (length(ind) > 0){ outdf[i,aevnts[j]] <- sum(stmp$AREA[ind]) }
+        if (length(ind) > 0){ outdf[i,aevnts[j]] <- sum(st_area(stmp[ind,])) }
         }
       }
     }
