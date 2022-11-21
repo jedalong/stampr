@@ -19,8 +19,8 @@
 #'  \code{AvgAreaRatio} -- ratio between the \code{AreaRatio} and \code{NumRatio};
 #'  \deqn{\mathtt{AvgAreaRatio} = \frac{\mathtt{AreaRatio}}{\mathtt{NumRatio}} = \frac{\frac{A(T2)}{A(T1)}}{\frac{\#(T1)}{\#(T2)}}}{AvgAreaRatio=AreaRatio/NumRatio}
 #'
-#' @param T1 a \code{SpatialPolygonsDataFrame} object of polygons from time 1.
-#' @param T2 a \code{SpatialPolygonsDataFrame} object of polygons from time 2.
+#' @param T1 a \code{sf} object of polygons from time 1.
+#' @param T2 a \code{sf object of polygons from time 2.
 
 #'
 #' @return
@@ -31,8 +31,8 @@
 # ---- End of roxygen documentation ----
 
 glob.change <- function(T1,T2){
-  NumRatio <- length(T1)/length(T2)
-  AreaRatio <- gArea(T1)/gArea(T2)
+  NumRatio <- nrow(T1)/nrow(T2)
+  AreaRatio <- st_area(st_union(T1))/st_area(st_union(T2))
   AvgAreaRatio <- AreaRatio/NumRatio
   return(list(NumRatio=NumRatio, AreaRatio=AreaRatio, AvgAreaRatio = AvgAreaRatio))
   }
