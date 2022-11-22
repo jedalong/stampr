@@ -51,8 +51,6 @@ stamp.distance <- function(stmp, dist.mode="Centroid",group=FALSE){
 #                 T2 polys, and returns the same value for each event. 
 #==============================================================================
 CentroidDistance <- function(stmp,group=FALSE){
-  crs_orig <- st_crs(stmp)
-  stmp <- st_transform(stmp,crs=4326)
   
   stmp$CENDIST <- NA
   grps <- unique(stmp$GROUP)
@@ -126,6 +124,9 @@ HausdorffDistance <- function(stmp,group=FALSE){
 
 
 #Compute function results based on input method.
+crs_orig <- st_crs(stmp)
+stmp <- st_transform(stmp,crs=4326)
+
 stmp <- switch(dist.mode,
                Centroid = CentroidDistance(stmp,group),
                Hausdorff = HausdorffDistance(stmp,group),

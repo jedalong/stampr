@@ -7,9 +7,9 @@
 stamp(T1, T2, dc = 0, direction = FALSE, distance = FALSE, ...)
 }
 \arguments{
-\item{T1}{a \code{SpatialPolygonsDataFrame} object of polygons from time 1.}
+\item{T1}{a \code{sf} polygons object of polygons from time 1.}
 
-\item{T2}{a \code{SpatialPolygonsDataFrame} object of polygons from time 2.}
+\item{T2}{a \code{sf} polygons object of polygons from time 2.}
 
 \item{dc}{spatial distance threshold for determining groupings (see \bold{Details}) in appropriate units.}
 
@@ -23,7 +23,7 @@ stamp(T1, T2, dc = 0, direction = FALSE, distance = FALSE, ...)
 set to \code{TRUE}.}
 }
 \value{
-This function returns a \code{SpatialPolygonsDataFrame} with the following data columns:
+This function returns a \code{sf} polygons object with the following data columns:
  \item{ID1}{Polygon ID from T1 polygons; \code{NA} if it did not exist,}
  \item{ID2}{Polygon ID from T2 polygons; \code{NA} if it did not exist,}
  \item{LEV1}{Level 1 STAMP designation,}
@@ -36,7 +36,7 @@ This function returns a \code{SpatialPolygonsDataFrame} with the following data 
  \item{--}{(optional) Additional columns from distance analysis if \code{distance = TRUE},}
 }
 \description{
-This function generates a \code{SpatialPolygonsDataFrame} that can be used for spatial temporal analysis of moving polygons
+This function generates a \code{sf} polygons object that can be used for spatial temporal analysis of moving polygons
 as described in the paper Robertson et al. (2007).
 }
 \details{
@@ -60,16 +60,13 @@ The \code{stamp} function can be used to perform spatial temporal analysis of mo
  See Robertson et al. (2007; especially Figure 1) for complete descriptions of all STAMP movement
  event types.
  
- Note also that there must be a globally unique \code{ID} column in each data frame passed to the stamp function
+ Note also that there must be a unique ID of each polygon, the function uses the row.names of the polygon objects. Modify the row.names accordingly if you wish to use an alternative ID label.
 }
 \references{
 Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons.
  \emph{Journal of Geographical Systems}, 9:207-227.
-Long, J., Robertson, C., and Nelson, T. (2018) stampr: Spatial-temporal analysis of moving polygons in R.
- \emph{Journal of Statistical Software}, 84:1.
 }
 \seealso{
-stamp.direction stamp.distance stamp.shape stamp.map stamp.group.summary
+stamp.direction stamp.distance stamp.map stamp.group.summary
 }
 \keyword{stamp}
-

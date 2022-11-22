@@ -7,9 +7,9 @@
 stamp.distance(stmp, dist.mode = "Centroid", group = FALSE)
 }
 \arguments{
-\item{stmp}{a \code{SpatialPolygonsDataFrame} object generated from the \code{stamp} function.}
+\item{stmp}{a \code{sf} object generated from the \code{stamp} function.}
 
-\item{dist.mode}{Character determining the emethod by which polygon distances are computed. If \code{"Centroid"}
+\item{dist.mode}{Character determining the method by which polygon distances are computed. If \code{"Centroid"}
 then the centroid distance is calculated, if \code{"Hausdorff"} then the discrete Hausdorff distance
 is calculated; see \code{Details}.}
 
@@ -18,8 +18,8 @@ stamp event (\code{group = FALSE} -- the default), or whether T2 polygons should
 union) in order to compute the measure of distance for each stamp group (\code{group = TRUE})}
 }
 \value{
-Appropriately named columns (e.g., \code{CENDIST} or \code{HAUSDIST}) in the stamp \code{SpatialPolygonsDataFrame}
- object.
+Appropriately named columns (e.g., \code{CENDIST} or \code{HAUSDIST}) in the stamp \code{sf}
+ object. Distances are in meters.
 }
 \description{
 The function \code{stamp.distance} can be used to compute various measures of distance 
@@ -32,18 +32,18 @@ The function \code{stamp.distance} can be used to compute various measures of di
    of all T1 polygons (combined) to each stamp event (\code{group = FALSE}), or to the union of
    all T2 polygons within a group (\code{group = TRUE}), in the second case, all events within a group
    are given an identical distance value.\cr\cr
-   The Hausdorff distance calculation uses the discrete version of the Hausdorff distance, as
-   programmed in the \code{rgeos} function \code{gDistance}. A value of \code{densifyFrac = 1} is used
-   to increase the precision of this measurement -- see \code{help(gDistance)}. The returned distance
+   The Hausdorff distance calculation uses the Hausdorff distance, as
+   programmed in the function \code{st_distance}. A value of \code{par = 0.1} is used
+   to increase the precision of this measurement -- see \code{help(st_distance)}. The returned distance
    is then the Hausdorff distance of all T1 polygons (combined) to each stamp event (\code{group = FALSE}),
    or to the union of all T2 polygons within a group (\code{group = TRUE}), in the second case, all events 
    within a group are given an identical distance value.
+   All distance calculations are computed in meters using the geographical projection WGS84.
 }
 \references{
 Hausdorff Distance: \url{http://en.wikipedia.org/wiki/Hausdorff_distance}
 }
 \seealso{
-stamp stamp.direction stamp.shape gDistance
+stamp stamp.direction
 }
 \keyword{stamp}
-

@@ -14,7 +14,7 @@
 #'  Annane, B., St. Fleur, R. (2010) Reconstruction of Hurricane Katrina's wind fields for storm surge and wave 
 #'  hindcasting. \emph{Ocean Engineering}, 37, 26-36. \cr\cr
 #'  Powell, M.D., Houston, S.H. (1998) The HMD real-time hurricane wind analysis system. \emph{Journal of Wind
-#'  Engineering and Industrial Aerodynamics}, 77\&78, 53-64.
+#'  Engineering and Industrial Aerodynamics}, 77/78, 53-64.
 #'  
 #' @source \url{http://www.aoml.noaa.gov/hrd/data_sub/wind.html}
 #'

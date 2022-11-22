@@ -7,33 +7,35 @@
 stamp.stgroup.summary(stmp, area = TRUE, count = TRUE)
 }
 \arguments{
-\item{stmp}{a \code{SpatialPolygonsDataFrame} generated from the \code{stamp} function.}
+\item{stmp}{a \code{sf} polygon object generated from the \code{stamp.multichange} function.}
 
 \item{area}{logical, whether or not to compute the STAMP event areas.}
 
-\item{count}{logical, whether or not to compute the count of STAMP evets within each group.}
+\item{count}{logical, whether or not to compute the count of STAMP events within each group.}
 }
 \value{
 A \code{data.frame} where rows are stamp groups and columns correspond to the STAMP event types (ID, areas, and counts).
 }
 \description{
-The function \code{stamp.stgroup.summary} compiles summary statistics for each STAMP grouping.
+The function \code{stamp.stgroup.summary} compiles summary statistics for each STAMP space-time grouping.
  Specifically, it computes the area of each STAMP event type (e.g., generation, expansion, etc.)
  within each grouping. It also computes the number of events belonging to each event type.
 }
 \details{
-\code{stamp.group.summary} computes area and count summary statistics of STAMP output. Note that if
- both \code{area} and \code{count} are set to \code{FALSE}, \code{stamp.group.summary} returns a
+\code{stamp.stgroup.summary} computes area and count summary statistics of STAMP output derived from multi-time analysis using stamp.multichange.
+ stamp.multichange is just a wrapper function for applying stamp to multiple time periods in the same dataset. Note that if
+ both \code{area} and \code{count} are set to \code{FALSE}, \code{stamp.stgroup.summary} returns a
  \code{data.frame} with just the stgroup IDs as the only column.
 }
 \examples{
-library(sp)
+library(sf)
 data("katrina")
-katrina$ID <- katrina$Id
 ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 STGroup <- stamp.stgroup.summary(ch)
 head(STGroup)
 
 }
+\seealso{
+stamp.multichange
+}
 \keyword{stamp}
-

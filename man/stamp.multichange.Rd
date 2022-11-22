@@ -4,23 +4,20 @@
 \alias{stamp.multichange}
 \title{run stamp function for multiple years of polygons at once}
 \usage{
-stamp.multichange(polys, changeByRow = TRUE, changeByField = FALSE,
-  changeField = "", ...)
+stamp.multichange(polys, changeByRow = TRUE, changeField = "", ...)
 }
 \arguments{
-\item{polys}{a \code{SpatialPolygonsDataFrame} wiht 2+ years of data to run through the \code{stamp} function.}
+\item{polys}{a \code{sf} polygon object with 2+ years of data to run through the \code{stamp} function.}
 
 \item{changeByRow}{logical, whether or not each time period is a separate unique row of data (e.g., as per the \code{katrina} data)}
 
-\item{changeByField}{logical, whether or not time period data is given by a specific field. If this is TRUE, changeByRow should be false}
-
-\item{changeField}{string, name of the field which contains time period if changeByField is TRUE}
+\item{changeField}{string, name of the field which contains time period if changeByRow is fALSE}
 
 \item{...}{list of paramater values to provide to the \code{stamp} function}
 }
 \value{
-A \code{SpatialPolygonsDataFrame} which includes all outputs from the calls to the \code{stamp} function. If there are T time periods,
- there will be T-1 time periods in the resulting \code{SpatialPolygonsDataFrame} object.
+A \code{sf} object which includes all outputs from the calls to the \code{stamp} function. If there are T time periods,
+ there will be T-1 time periods in the resulting \code{sf} object.
 }
 \description{
 The function \code{stamp.multichange} is a wrapper function that makes multiple calls to the stamp 
@@ -32,12 +29,12 @@ The function \code{stamp.multichange} is a wrapper function that makes multiple 
  the \code{mpb} data, where time period is specified by a column. Time periods should be ordered from 1 through T.
 }
 \examples{
-library(sp)
 data("katrina")
-katrina$ID <- katrina$Id
 ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 STGroup <- stamp.stgroup.summary(ch)
 head(STGroup)
 }
+\seealso{
+stamp.stgroup.summary
+}
 \keyword{stamp}
-

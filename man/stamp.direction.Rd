@@ -7,12 +7,12 @@
 stamp.direction(stmp, dir.mode = "CentroidAngle", ndir = 4, group = FALSE)
 }
 \arguments{
-\item{stmp}{a \code{SpatialPolygonsDataFrame} object generated from the \code{stamp} function.}
+\item{stmp}{a \code{sf} object generated from the \code{stamp} function.}
 
 \item{dir.mode}{a character item identifying which directional relations method is to be used. See \bold{Details}
 for information on each individual method.}
 
-\item{ndir}{(optional) parameter identifying the number of directions to be computed. See inidividual method
+\item{ndir}{(optional) parameter identifying the number of directions to be computed. See indiividual method
 \bold{Details} for appropriate usage.}
 
 \item{group}{(optional) a logical value identifying whether direction should be computed on groups or individual
@@ -23,12 +23,12 @@ Appends the input \code{stamp} object with appropriate columns for the direction
  \code{dir.mode} is:
  \item{"CentroidAngle"}{A single column with centroid angle results, in degrees (North = 0 degrees). If
    \code{group=TRUE} then values are identical for all event polygons in the group.}
- \item{"ConeModel"}{\code{ndir} new columns with the area of the STAMP event in each direction,
+ \item{"ConeModel"}{\code{ndir} new columns with the area (m2) of the STAMP event in each direction,
    named appropriately (e.g., as \code{DIR45}, where 45 refers to the mid-point of that directional cone).}
- \item{"MBRModel"}{9 new columns with the area of the STAMP event in each direction,
-   named appropriately as "SW","S","SE","W","SAME","E","NW","N","NE".}
- \item{"ModConeModel"}{\code{ndir} new columns  with the area of the STAMP event in each direction,
-   named appropriately as, for example, "N","E","S","W" with \code{ndir=4}.}
+ \item{"MBRModel"}{9 new columns with the area (m2) of the STAMP event in each direction,
+   named appropriately as, for example, "MBR_SW","MBR_S",... etc.}
+ \item{"ModConeModel"}{\code{ndir} new columns  with the area (m2) of the STAMP event in each direction,
+   named appropriately as, for example, "MC4_N","MC8_SE", ... etc.}
  Note: STAMP events that are singular (i.e., only 1 polygon in the group)
  will have \code{NA}'s from directional analysis.
 }
@@ -55,18 +55,18 @@ The \code{stamp.direction} function can be used to facilitate directional analys
    sections for the eight cardinal directions around the MBR, along with the MBR itself. The area
    of each stamp event within each of the nine sections is then computed. See Skiadopoulos et al. (2005) for
    more detailed information. \code{"MBRModel"} ignores the \code{ndir} parameter.
- \item \code{"ModConeModel"} -- The modified cone model first computes the centroid of the T1 event that includes a stable event type.
+ \item \code{"ModConeModel"} -- The modified cone model first computes the centroid of the T1 events.
    Then \code{ndir = 4 or 8} cones are created outward from this centroid to the minimum bounding rectangle
    of the entire grouping. As described by Robertson et al. (2007) this approach is more accomodating
-   to polygon groups that are irregular in size or shape. If there is more than 1 stable event (as flagged
-   by the \code{stamp.obj LEV4} column, the Voronoi segregation method defined by Robertson et al. (2007)
-   is employed. The modified cone model method first computes the centroid of all T1 polygons in a STAMP grouping.
+   to polygon groups that are irregular in size or shape. The modified cone model method first computes the centroid of all T1 polygons in a STAMP grouping.
    It then computes the bounding box of ALL events in a STAMP grouping. Then, \code{ndir=4} or \code{8}
    cones are computed. In the case of \code{ndir=4}, cones radiate from the T1 centroid to the four
    corners of the bounding box. The result of the modified cone model method is that the cones
    are not equally spaced, but tailored to the individual STAMP groupings shape. See Robertson et al.
-   (2007) for more detailed information.
- }
+   (2007) for more detailed information. NOTE: This function has been altered slightly as of stampr v 0.3.
+   }
+   
+   As of V 0.3 all operations are conducted using sf object classes, all directional (aziumuth) and area calculations use WGS84.
 }
 \references{
 Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons.
@@ -77,7 +77,6 @@ Skiadopoulos, S. Giannoukos, C., Sarkas, N., Vassiliadis, P., Sellis, T., and Ko
  managing directional relations. \emph{IEEE Transactions on Knowledge and Data Engineering}, 17:1610-1623.
 }
 \seealso{
-stamp, stamp.distance, stamp.shape
+stamp stamp.distance
 }
 \keyword{stamp}
-

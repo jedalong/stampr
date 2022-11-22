@@ -4,6 +4,6 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @format \code{fire2} --- a \code{SpatialPolygonsDataFrame} 
+#' @format \code{fire2} --- a \code{sf} object
 #' @name fire2
 NULL

@@ -1,3 +1,11 @@
+stampr 0.3
+===========
+* 22-11-2022 - Changed everything to use sf objects, no more sp dependency.
+		 - All distance and area calculations use WGS83 (CRS4326) but objects are back
+			projected to original CRS.
+		 - Removed stamp.shape function as it has no clear relevance.
+		 - Changed maintainer from Colin to Jed
+
 stampr 0.1
 =================
 * 03-10-2014 -  Changed names of STAMP event types to all be minimum 4 charachters e.g., STBL.

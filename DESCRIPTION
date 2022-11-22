@@ -1,26 +1,16 @@
 Package: stampr
 Type: Package
 Title: Spatial Temporal Analysis of Moving Polygons
-Version: 0.1
+Version: 0.3.0
 Author: Jed Long and Colin Robertson
-Maintainer: Colin Robertson <crobertson@wlu.ca>
+Maintainer: Jed Long <jed.long@uwo.ca>
 Description: Perform spatial temporal analysis of moving polygons; a
     longstanding analysis problem in Geographic Information Systems. Facilitates
-    directional analysis, shape analysis, and some other simple functionality for
+    directional analysis, distance analysis, and some other simple functionality for
     examining spatial-temporal patterns of moving polygons.
 Depends:
-    R (>= 2.10)
+    R (>= 4.0)
 License: GPL-3
-Imports:
-    sp,
-    rgeos,
-    raster,
-    rgdal,
-    maptools,
-    deldir,
-    spdep,
-    grDevices,
-    methods
-Suggests:
-    igraph
-RoxygenNote: 5.0.0
+Imports: sf, lwgeom, spdep, dplyr, geosphere, graphics, grDevices, rlang
+RoxygenNote: 7.2.1
+Encoding: UTF-8

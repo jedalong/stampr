@@ -92,7 +92,7 @@ stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){
                  CentroidAngle = CentroidAngle(stmp,group),
                  ConeModel = ConeModel(stmp,ndir),
                  MBRModel = MBRModel(stmp),
-                 ModConeModel = ModConeModel(stmp,ndir),
+                 #ModConeModel = ModConeModel(stmp,ndir),
                  stop(paste("The direction method is does not exist: ",dir.mode)))
   
   stmp <- st_transform(stmp,crs=crs_orig)
@@ -224,10 +224,10 @@ MBRModel <- function(stmp){
     box.crds = crds[boxind,]
     box.crds$MBRID = c(1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9)
     
-    box.poly <- box.crds %>%
-      st_as_sf(coords = c("x", "y"), crs = 4326) %>%
-      group_by(MBRID) %>%
-      summarise(geometry = st_combine(geometry)) %>%
+    box.poly <- box.crds |>
+      st_as_sf(coords = c("x", "y"), crs = 4326) |>
+      group_by(.data$MBRID) %>%
+      summarise(geometry = st_combine(.data$geometry)) |>
       st_cast("POLYGON")
     
     for (k in 1:length(ind)){
@@ -283,10 +283,10 @@ ModConeModel <- function(stmp,ndir=4){
       con.crds = crds[conind,]
       con.crds$MCMID = c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4)
       
-      con.poly <- con.crds %>%
-        st_as_sf(coords = c("X", "Y"), crs = 4326) %>%
-        group_by(MCMID) %>%
-        summarise(geometry = st_combine(geometry)) %>%
+      con.poly <- con.crds |>
+        st_as_sf(coords = c("X", "Y"), crs = 4326) |>
+        group_by(.data$MCMID) |>
+        summarise(geometry = st_combine(.data$geometry)) |>
         st_cast("POLYGON")
       
       #calculate intersection area for each cone
@@ -323,8 +323,8 @@ ModConeModel <- function(stmp,ndir=4){
       
       con.poly <- con.crds %>%
         st_as_sf(coords = c("X", "Y"), crs = 4326) %>%
-        group_by(MCMID) %>%
-        summarise(geometry = st_combine(geometry)) %>%
+        group_by(.data$MCMID) %>%
+        summarise(geometry = st_combine(.data$geometry)) %>%
         st_cast("POLYGON")
       
       #calculate intersection area for each cone

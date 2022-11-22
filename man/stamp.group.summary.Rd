@@ -7,7 +7,7 @@
 stamp.group.summary(stmp, area = TRUE, count = TRUE)
 }
 \arguments{
-\item{stmp}{a \code{SpatialPolygonsDataFrame} generated from the \code{stamp} function.}
+\item{stmp}{a \code{sf} object generated from the \code{stamp} function.}
 
 \item{area}{logical, whether or not to compute the STAMP event areas.}
 
@@ -27,4 +27,3 @@ The function \code{stamp.group.summary} compiles summary statistics for each STA
  \code{data.frame} with just the group IDs as the only column.
 }
 \keyword{stamp}
-

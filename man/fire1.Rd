@@ -4,7 +4,9 @@
 \name{fire1}
 \alias{fire1}
 \title{Forest Fire dataset}
-\format{\code{fire1} --- a \code{SpatialPolygonsDataFrame} with polygons representing the location of forest fire.}
+\format{
+\code{fire1} --- a \code{sf} object with polygons representing the location of forest fire.
+}
 \source{
 Simulated data
 }
@@ -12,12 +14,17 @@ Simulated data
 A dataset containing fake forest fire polygons representing the movement of the forest fire from T1 (fire1) to T2 (fire2). The data is provided purely for demonstration purposes.
 }
 \examples{
-library(sp)
+
 data(fire1)
-data(fire2)
 plot(fire1)
-plot(fire2,border=2,add=TRUE)
+
+data(fire2)
+plot(fire2)
+
+\dontrun{
+library(mapview)
+mapview(fire1) + mapview(fire2)
+}
 }
 \keyword{datasets,}
 \keyword{testing}
-

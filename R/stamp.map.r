@@ -56,12 +56,12 @@ stamp.map <- function(stmp,by="LEV1", ...){
     else {
       stmp[,by] <- factor(stmp[,by])
       cols <- rainbow(length(unique(stmp[,by])))
-    }
+      }
     
     #Quick plot with chosen colors
     cpal <- palette(cols)
     plot(stmp[,by],pal=cpal,border='grey',key.pos=4,key.width=lcm(2.5))
  
-  else {stop(paste("The column ",by," does not exist.",sep=""))}
+    } else {stop(paste("The column ",by," does not exist.",sep=""))}
   }
 #------ end of stamp.map function ---------------------------------------------

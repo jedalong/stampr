@@ -4,9 +4,11 @@
 \name{katrina}
 \alias{katrina}
 \title{Hurricane Katrina polygons dataset}
-\format{A \code{SpatialPolygonsDataFrame} with 33 records of of the location of Hurricane Katrina, every 
+\format{
+A \code{sf} object with 33 records of of the location of Hurricane Katrina, every 
  3 hrs, from 21:00 25-AUG-2005 to 21:00 29-AUG-2005. The date and time of each polygon is recorded in the
- column \code{DateTime}.}
+ column \code{DateTime}.
+}
 \source{
 \url{http://www.aoml.noaa.gov/hrd/data_sub/wind.html}
 }
@@ -22,18 +24,14 @@ at a given time. Polygons were derived at 3 hr intervals; which means there are 
 the dataset.
 }
 \examples{
-library(sp)
 data(katrina)
-plot(katrina, border=1:33)
-T1 <- katrina[1,]
-plot(T1, col=1, add=TRUE)
+plot(katrina['Id'])
 }
 \references{
 Powell, M.D., Murillo, S., Dodge, P., Uhlhorn, E., Gamache, J., Cardone, V., Cox, A., Otero, S., Carrasco, N., 
  Annane, B., St. Fleur, R. (2010) Reconstruction of Hurricane Katrina's wind fields for storm surge and wave 
  hindcasting. \emph{Ocean Engineering}, 37, 26-36. \cr\cr
  Powell, M.D., Houston, S.H. (1998) The HMD real-time hurricane wind analysis system. \emph{Journal of Wind
- Engineering and Industrial Aerodynamics}, 77\&78, 53-64.
+ Engineering and Industrial Aerodynamics}, 77/78, 53-64.
 }
 \keyword{datasets}
-

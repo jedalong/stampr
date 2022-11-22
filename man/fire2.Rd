@@ -4,9 +4,10 @@
 \name{fire2}
 \alias{fire2}
 \title{Forest Fire dataset}
-\format{\code{fire2} --- a \code{SpatialPolygonsDataFrame}}
+\format{
+\code{fire2} --- a \code{sf} object
+}
 \description{
 see fire1
 }
 \keyword{datasets}
-

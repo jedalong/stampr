@@ -20,8 +20,7 @@
 #'  \deqn{\mathtt{AvgAreaRatio} = \frac{\mathtt{AreaRatio}}{\mathtt{NumRatio}} = \frac{\frac{A(T2)}{A(T1)}}{\frac{\#(T1)}{\#(T2)}}}{AvgAreaRatio=AreaRatio/NumRatio}
 #'
 #' @param T1 a \code{sf} object of polygons from time 1.
-#' @param T2 a \code{sf object of polygons from time 2.
-
+#' @param T2 a \code{sf} object of polygons from time 2.
 #'
 #' @return
 #'  A \code{list} object with three elements - Results for the \code{NumRatio}, \code{AreaRatio}, and \code{AvgAreaRatio} metrics.

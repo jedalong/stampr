@@ -7,9 +7,9 @@
 glob.change(T1, T2)
 }
 \arguments{
-\item{T1}{a \code{SpatialPolygonsDataFrame} object of polygons from time 1.}
+\item{T1}{a \code{sf} object of polygons from time 1.}
 
-\item{T2}{a \code{SpatialPolygonsDataFrame} object of polygons from time 2.}
+\item{T2}{a \code{sf} object of polygons from time 2.}
 }
 \value{
 A \code{list} object with three elements - Results for the \code{NumRatio}, \code{AreaRatio}, and \code{AvgAreaRatio} metrics.
@@ -32,4 +32,3 @@ The function \code{glob.change} computes a set of three global change metrics fo
  \deqn{\mathtt{AvgAreaRatio} = \frac{\mathtt{AreaRatio}}{\mathtt{NumRatio}} = \frac{\frac{A(T2)}{A(T1)}}{\frac{\#(T1)}{\#(T2)}}}{AvgAreaRatio=AreaRatio/NumRatio}
 }
 \keyword{metrics}
-
