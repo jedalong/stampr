@@ -24,12 +24,14 @@
 #' 
 #' @seealso stamp.multichange
 #' @examples
+#' \dontrun{
+#'  ##NOT RUN##
 #' library(sf)
 #' data("katrina")
 #' ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 #' STGroup <- stamp.stgroup.summary(ch)
 #' head(STGroup)
-#'
+#' }
 #' @export
 
 #

@@ -22,7 +22,7 @@
 #'  LEV4 -- LEV4 is different from other levels. It is used to identify those groups where
 #'          union (\code{UNION}), division (\code{DIVISION}), and both union and division
 #'          (\code{BOTH}) events occur. These events occur when there are more than one
-#'          stable event in a group. Groups with one or no stable events recieve an \code{NA}
+#'          stable event in a group. Groups with one or no stable events receive an \code{NA}
 #'          value for LEV4. \cr
 #'  See Robertson et al. (2007; especially Figure 1) for complete descriptions of all STAMP movement
 #'  event types.

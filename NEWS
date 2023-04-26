@@ -1,9 +1,9 @@
 stampr 0.3
 ===========
-* 22-11-2022 - Changed everything to use sf objects, no more sp dependency.
+* 24-04-2023 - Complete update to use sf objects, no more sp dependency.
 		 - All distance and area calculations use WGS83 (CRS4326) but objects are back
 			projected to original CRS.
-		 - Removed stamp.shape function as it has no clear relevance.
+		 - Removed stamp.shape function as it has no clear purpose.
 		 - Changed maintainer from Colin to Jed
 
 stampr 0.1

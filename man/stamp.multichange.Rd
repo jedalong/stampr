@@ -11,7 +11,7 @@ stamp.multichange(polys, changeByRow = TRUE, changeField = "", ...)
 
 \item{changeByRow}{logical, whether or not each time period is a separate unique row of data (e.g., as per the \code{katrina} data)}
 
-\item{changeField}{string, name of the field which contains time period if changeByRow is fALSE}
+\item{changeField}{string, name of the field which contains time period if changeByRow is FALSE}
 
 \item{...}{list of paramater values to provide to the \code{stamp} function}
 }
@@ -29,10 +29,13 @@ The function \code{stamp.multichange} is a wrapper function that makes multiple 
  the \code{mpb} data, where time period is specified by a column. Time periods should be ordered from 1 through T.
 }
 \examples{
+\dontrun{
+## NOT RUN ##
 data("katrina")
 ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 STGroup <- stamp.stgroup.summary(ch)
 head(STGroup)
+}
 }
 \seealso{
 stamp.stgroup.summary

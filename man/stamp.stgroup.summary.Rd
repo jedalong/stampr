@@ -28,12 +28,14 @@ The function \code{stamp.stgroup.summary} compiles summary statistics for each S
  \code{data.frame} with just the stgroup IDs as the only column.
 }
 \examples{
+\dontrun{
+ ##NOT RUN##
 library(sf)
 data("katrina")
 ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 STGroup <- stamp.stgroup.summary(ch)
 head(STGroup)
-
+}
 }
 \seealso{
 stamp.multichange

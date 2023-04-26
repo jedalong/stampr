@@ -41,7 +41,7 @@ The function \code{stamp.distance} can be used to compute various measures of di
    All distance calculations are computed in meters using the geographical projection WGS84.
 }
 \references{
-Hausdorff Distance: \url{http://en.wikipedia.org/wiki/Hausdorff_distance}
+Hausdorff Distance: \url{https://en.wikipedia.org/wiki/Hausdorff_distance}
 }
 \seealso{
 stamp stamp.direction

@@ -8,7 +8,7 @@
 #' @source Simulated data
 #'
 #' @docType data
-#' @keywords datasets, testing
+#' @keywords datasets
 #' @format \code{fire1} --- a \code{sf} object with polygons representing the location of forest fire. 
 #' @name fire1
 #' @examples

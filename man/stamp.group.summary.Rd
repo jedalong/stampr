@@ -11,7 +11,7 @@ stamp.group.summary(stmp, area = TRUE, count = TRUE)
 
 \item{area}{logical, whether or not to compute the STAMP event areas.}
 
-\item{count}{logical, whether or not to compute the count of STAMP evets within each group.}
+\item{count}{logical, whether or not to compute the count of STAMP events within each group.}
 }
 \value{
 A \code{data.frame} where rows are stamp groups and columns correspond to the STAMP event types (ID, areas, and counts).

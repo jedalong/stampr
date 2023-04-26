@@ -5,7 +5,7 @@
 \alias{mpb}
 \title{MPB dataset}
 \format{
-\code{mpb} --- a \code{sf} object with 711 mountain pine beetle hotspot polygons that occured over eight years. The temporal indicator is the \code{TGROUP} column. Another variable \code{REGION} indicates whether the hotspot was in the northern or southern regions, which experienced mostly independent outbreaks.
+\code{mpb} --- a \code{sf} object with 711 mountain pine beetle hotspot polygons that occurred over eight years. The temporal indicator is the \code{TGROUP} column. Another variable \code{REGION} indicates whether the hotspot was in the northern or southern regions, which experienced mostly independent outbreaks.
 }
 \source{
 Data obtained from Trisalyn Nelson (ASU)

@@ -27,7 +27,7 @@
 #'    more detailed information. \code{"MBRModel"} ignores the \code{ndir} parameter.
 #'  \item \code{"ModConeModel"} -- The modified cone model first computes the centroid of the T1 events.
 #'    Then \code{ndir = 4 or 8} cones are created outward from this centroid to the minimum bounding rectangle
-#'    of the entire grouping. As described by Robertson et al. (2007) this approach is more accomodating
+#'    of the entire grouping. As described by Robertson et al. (2007) this approach is more accommodating
 #'    to polygon groups that are irregular in size or shape. The modified cone model method first computes the centroid of all T1 polygons in a STAMP grouping.
 #'    It then computes the bounding box of ALL events in a STAMP grouping. Then, \code{ndir=4} or \code{8}
 #'    cones are computed. In the case of \code{ndir=4}, cones radiate from the T1 centroid to the four
@@ -36,14 +36,14 @@
 #'    (2007) for more detailed information. NOTE: This function has been altered slightly as of stampr v 0.3.
 #'    }
 #'    
-#'    As of V 0.3 all operations are conducted using sf object classes, all directional (aziumuth) and area calculations use WGS84.
+#'    As of V 0.3 all operations are conducted using sf object classes, all directional (azimuth) and area calculations use WGS84.
 #'
 #' @param stmp a \code{sf} object generated from the \code{stamp} function.
 #' @param dir.mode a character item identifying which directional relations method is to be used. See \bold{Details}
 #'  for information on each individual method.
 #' @param group (optional) a logical value identifying whether direction should be computed on groups or individual
 #'  event polygons (only used with \code{CentroidAngle} method).  
-#' @param ndir (optional) parameter identifying the number of directions to be computed. See indiividual method
+#' @param ndir (optional) parameter identifying the number of directions to be computed. See individual method
 #'             \bold{Details} for appropriate usage.
 #' 
 #' @return

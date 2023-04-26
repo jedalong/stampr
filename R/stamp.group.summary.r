@@ -14,7 +14,7 @@
 #'
 #' @param stmp a \code{sf} object generated from the \code{stamp} function.
 #' @param area logical, whether or not to compute the STAMP event areas.
-#' @param count logical, whether or not to compute the count of STAMP evets within each group.
+#' @param count logical, whether or not to compute the count of STAMP events within each group.
 #'
 #' @return
 #'  A \code{data.frame} where rows are stamp groups and columns correspond to the STAMP event types (ID, areas, and counts).

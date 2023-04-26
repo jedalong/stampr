@@ -13,7 +13,7 @@
 #'
 #' @param polys a \code{sf} polygon object with 2+ years of data to run through the \code{stamp} function.
 #' @param changeByRow logical, whether or not each time period is a separate unique row of data (e.g., as per the \code{katrina} data)
-#' @param changeField string, name of the field which contains time period if changeByRow is fALSE
+#' @param changeField string, name of the field which contains time period if changeByRow is FALSE
 #' @param ... list of paramater values to provide to the \code{stamp} function
 #'
 #' @return
@@ -24,10 +24,13 @@
 #' @seealso stamp.stgroup.summary
 #' 
 #' @examples
+#' \dontrun{
+#' ## NOT RUN ##
 #' data("katrina")
 #' ch <- stamp.multichange(katrina, changeByRow = TRUE, dc = 0, distance = TRUE, direction = FALSE)
 #' STGroup <- stamp.stgroup.summary(ch)
 #' head(STGroup)
+#' }
 #' @export
 
 #

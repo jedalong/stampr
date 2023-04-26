@@ -12,7 +12,7 @@ A \code{sf} object with 33 records of the eye location of Hurricane Katrina, eve
 \description{
 A dataset containing points representing the eye of Hurricane Katrina centroid from 21:00 26-AUG-2005 to 
 21:00 29-AUG-2005. Polygon contours were extracted from the US NOAA H*Wind product, downloadable from:
-\url{http://www.aoml.noaa.gov/hrd/data_sub/wind.html}
+\url{https://www.aoml.noaa.gov/hrd/data_sub/wind.html}
 }
 \details{
 The \code{eyeshp} dataset contains points that were derived from the raw NOAA H*Wind data. The data is included here

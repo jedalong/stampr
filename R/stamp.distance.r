@@ -34,7 +34,7 @@
 #'  object. Distances are in meters.
 #'
 #' @references 
-#'  Hausdorff Distance: \url{http://en.wikipedia.org/wiki/Hausdorff_distance}
+#'  Hausdorff Distance: \url{https://en.wikipedia.org/wiki/Hausdorff_distance}
 #'     
 #' @keywords stamp
 #' @seealso stamp stamp.direction

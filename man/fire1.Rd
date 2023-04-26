@@ -26,5 +26,4 @@ library(mapview)
 mapview(fire1) + mapview(fire2)
 }
 }
-\keyword{datasets,}
-\keyword{testing}
+\keyword{datasets}

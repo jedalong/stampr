@@ -10,12 +10,12 @@ A \code{sf} object with 33 records of of the location of Hurricane Katrina, ever
  column \code{DateTime}.
 }
 \source{
-\url{http://www.aoml.noaa.gov/hrd/data_sub/wind.html}
+\url{https://www.aoml.noaa.gov/hrd/data_sub/wind.html}
 }
 \description{
 A dataset containing polygons representing the movement of Hurricane Katrina from 21:00 26-AUG-2005 to 
 21:00 29-AUG-2005. Polygon contours were extracted from the US NOAA H*Wind product, downloadable from:
-\url{http://www.aoml.noaa.gov/hrd/data_sub/wind.html}
+\url{https://www.aoml.noaa.gov/hrd/data_sub/wind.html}
 }
 \details{
 The \code{katrina} dataset contains polygons that were derived from the raw NOAA H*Wind data. The 39 mph isotach

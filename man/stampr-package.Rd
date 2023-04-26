@@ -17,8 +17,9 @@ geographic information science, but hopefully \code{stampr} can provide users wi
 platform for new developments and applied research looking at interesting geographical phenomena.
 }
 \references{
-Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons.
+Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons
  \emph{Journal of Geographical Systems}, 9:207-227.
+Long, J., Robertson, C., Nelson, T. (2018) stampr: Spatial-Temporal Analysis of Moving Polygons in R \emph{Journal of Statistical Software}. Code Snippets, 84(1), 1–19.
 }
 \author{
 Jed Long and Colin Robertson
