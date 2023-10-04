@@ -77,7 +77,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   
   pI <- suppressWarnings(st_intersection(T1,T2))
   
-  if (!is.null(pI)){
+  if (nrow(pI) > 0){ 
     pI$LEV1 <- "STBL"
     row.names(pI) <- paste0("STBL",seq(1:nrow(pI)))
   } 
@@ -86,21 +86,27 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   # A helper function that erases all of y from x:
   st_erase = function(x, y) {st_difference(x, st_union(st_combine(y)))}
   
-  
   gd1 <- suppressWarnings(st_erase(T1,T2))
+  
+  if(nrow(gd1) > 0) {
   gd1$LEV1 <- "DISA"
   gd1$id2 <- NA
   row.names(gd1) <- paste0("DISA",seq(1:nrow(gd1)))
+  }
   
   gd2 <- suppressWarnings(st_erase(T2,T1))
+  
+  if(nrow(gd2) > 0) {
   gd2$LEV1 <- "GENR"
   gd2$id1 <- NA
   row.names(gd2) <- paste0("GENR",seq(1:nrow(gd2)))
-  
+  }
   
   #Piece them together
   cols <- c('id1','id2','LEV1')
-  stmp <- rbind(gd1[,cols],pI[,cols],gd2[,cols])
+  stmp <- rbind(if(nrow(gd1) > 0) gd1[,cols],
+                if(nrow(pI) > 0) pI[,cols],
+                if(nrow(gd2) > 0) gd2[,cols])
   
   #assign event types ---
   stmp$LEV2 <- stmp$LEV1
@@ -122,6 +128,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
     }
   stmp$TMP <- n.comp.nb(nbl)$comp.id
   }
+  
   #Label all other LEV2 movement types...
   gdInd <- which(stmp$LEV2 == "GENR" | stmp$LEV2 == "DISA")
   tempLev <- stmp$LEV2
