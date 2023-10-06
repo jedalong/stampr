@@ -110,7 +110,9 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   
   # removes the linestrings produced in the steps above when polygons share borders (I think)
   # poly2nb below fails with non-polygonal geometry
-  stmp <- st_collection_extract(stmp, "POLYGON") 
+  if(any(unique(st_geometry_type(stmp)) %in% c("LINESTRING", "MULTILINESTRING", "GEOMETRYCOLLECTION"))) {
+    stmp <- st_collection_extract(stmp, "POLYGON") 
+  }
   
   #assign event types ---
   stmp$LEV2 <- stmp$LEV1
