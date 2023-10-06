@@ -75,15 +75,7 @@
 # ---- End of roxygen documentation ----
 
 
-stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){  
-#===============================================================================
-# Directional Analysis functions
-#  - Centroid Angle
-#  - Cone Model
-#  - Minimum Bounding Rectangle (MBR) method
-#  - Modified Cone model
-#===============================================================================
-  
+stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){
   #Compute function results based on input method.
   crs_orig <- st_crs(stmp)
   stmp <- st_transform(stmp,crs=4326)
@@ -93,11 +85,20 @@ stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){
                  ConeModel = ConeModel(stmp,ndir),
                  MBRModel = MBRModel(stmp),
                  #ModConeModel = ModConeModel(stmp,ndir),
-                 stop(paste("The direction method is does not exist: ",dir.mode)))
+                 stop(paste("The direction method does not exist: ",dir.mode)))
   
   stmp <- st_transform(stmp,crs=crs_orig)
   return(stmp)  
-  
+}
+
+#===============================================================================
+# Directional Analysis functions
+#  - Centroid Angle
+#  - Cone Model
+#  - Minimum Bounding Rectangle (MBR) method
+#  - Modified Cone model
+#===============================================================================
+    
 #----- Centroid Angle Function JED SF FIX -------------------------------------------------
 CentroidAngle <- function(stmp,group=FALSE){
   stmp$CENDIR <- NA
@@ -180,7 +181,7 @@ ConeModel <- function(stmp,ndir=4){
         #loop through polys in each group and compute area in each cone
         for (k in 1:length(ind)){
           into <- st_intersection(cone,stmp[ind[k],])
-          if (is.null(into) == FALSE) {
+          if (nrow(st_as_sf(into)) > 0) { # convert to sf from sfc to check rows in dataframe
             stmp[ind[k],cols[j]] <- st_area(into)
             }
           else {
@@ -347,7 +348,7 @@ ModConeModel <- function(stmp,ndir=4){
 
 #============= End of Directional Analysis Functions============================
   
-}
+
 
 
 
