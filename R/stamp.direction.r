@@ -105,7 +105,8 @@ CentroidAngle <- function(stmp,group=FALSE){
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) > 1){   #no movement for individual events
+    # Do not perform if: (i) no movement for individual events or (ii) multiple events in group only exist in one period
+    if (length(ind) > 1 & any(!is.na(stmp$id1[ind])) & any(!is.na(stmp$id2[ind]))){   
       #Assumes that all T1 events in a group form the basis of the centroid.
       #  i.e., does not separate stable, from concentration, or displacement.
       #  Also, does not account for problems arising from multiple stable events.
@@ -115,9 +116,7 @@ CentroidAngle <- function(stmp,group=FALSE){
         for (j in ind){
           #Compute Centroid Angle
           c2 <- suppressWarnings(st_centroid(st_geometry(stmp[j,])))
-          
-          temp <- st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
-          
+          temp <- as.numeric(st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi)
           if (temp < 0){temp <- 360 + temp}
           stmp$CENDIR[j] <- temp        
         }
@@ -125,7 +124,7 @@ CentroidAngle <- function(stmp,group=FALSE){
         t2.base <- stmp[which(stmp$GROUP == i & is.na(stmp$id2) == FALSE),]
         #Compute Centroid Angle
         c2 <- suppressWarnings(st_centroid(st_union(t2.base)))
-        temp <- st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
+        temp <- as.numeric(st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi)
         if (temp < 0){temp <- 360 + temp}
         stmp$CENDIR[ind] <- temp  
       }
@@ -155,7 +154,8 @@ ConeModel <- function(stmp,ndir=4){
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) > 1){   #no movement for individual events
+    # Do not perform if: (i) no movement for individual events or (ii) multiple events in group only exist in one period
+    if (length(ind) > 1 & any(!is.na(stmp$id1[ind])) & any(!is.na(stmp$id2[ind]))){   
       #Assumes that all T1 events in a group form the basis of the centroid.
       #  i.e., does not separate stable, from concentration, or displacement.
       #  Also, does not account for problems arising from multiple stable events.
@@ -183,8 +183,7 @@ ConeModel <- function(stmp,ndir=4){
           into <- st_intersection(cone,stmp[ind[k],])
           if (nrow(st_as_sf(into)) > 0) { # convert to sf from sfc to check rows in dataframe
             stmp[ind[k],cols[j]] <- st_area(into)
-            }
-          else {
+            } else {
             stmp[ind[k],cols[j]] <- 0
             }
           }
@@ -210,7 +209,7 @@ MBRModel <- function(stmp){
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) < 2){ next} #no movement for individual events
+    if (length(ind) < 2){next} #no movement for individual events
     t1.base <- stmp[which(stmp$GROUP == i & is.na(stmp$id1) == FALSE),]
     t1.bbox <- st_bbox(t1.base)
     
