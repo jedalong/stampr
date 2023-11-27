@@ -128,11 +128,11 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
   #Delineate contiguous bases for groups
   stmp$TMP <- 1
   if(length(stmp) > 1) {
-  nbl <- poly2nb(stmp)
+  nbl <- spdep::poly2nb(stmp)
   for(i in 1:nrow(stmp)) {
     nbl[[i]] <- c(unlist(nbl[i]), i)
     }
-  stmp$TMP <- n.comp.nb(nbl)$comp.id
+  stmp$TMP <- spdep::n.comp.nb(nbl)$comp.id
   }
   
   #Label all other LEV2 movement types...
