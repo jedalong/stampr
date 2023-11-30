@@ -127,7 +127,7 @@ stamp <- function(T1, T2, dc=0, direction=FALSE, distance=FALSE, ...){
 
   #Delineate contiguous bases for groups
   stmp$TMP <- 1
-  if(length(stmp) > 1) {
+  if(nrow(stmp) > 1) {
   nbl <- spdep::poly2nb(stmp)
   for(i in 1:nrow(stmp)) {
     nbl[[i]] <- c(unlist(nbl[i]), i)
