@@ -1,3 +1,8 @@
+stampr 0.3.1
+==============
+* 09-01-2024 - fix st_perimeter to call sf package
+
+
 stampr 0.3
 ===========
 * 24-04-2023 - Complete update to use sf objects, no more sp dependency.

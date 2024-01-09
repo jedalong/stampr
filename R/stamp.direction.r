@@ -115,7 +115,7 @@ CentroidAngle <- function(stmp,group=FALSE){
           #Compute Centroid Angle
           c2 <- suppressWarnings(st_centroid(st_geometry(stmp[j,])))
           
-          temp <- st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
+          temp <- lwgeom::st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
           
           if (temp < 0){temp <- 360 + temp}
           stmp$CENDIR[j] <- temp        
@@ -124,7 +124,7 @@ CentroidAngle <- function(stmp,group=FALSE){
         t2.base <- stmp[which(stmp$GROUP == i & is.na(stmp$id2) == FALSE),]
         #Compute Centroid Angle
         c2 <- suppressWarnings(st_centroid(st_union(t2.base)))
-        temp <- st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
+        temp <- lwgeom::st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
         if (temp < 0){temp <- 360 + temp}
         stmp$CENDIR[ind] <- temp  
       }
@@ -167,8 +167,8 @@ ConeModel <- function(stmp,ndir=4){
         theta1 <- (origins[j] + 0.5*cwidth)*180/pi
         theta2 <- (origins[j] - 0.5*cwidth)*180/pi
         #cone outer coords
-        c2 = geodesic(st_coordinates(c1),d=dexpand,azi=theta1)[1:2]
-        c3 = geodesic(st_coordinates(c1),d=dexpand,azi=theta2)[1:2]
+        c2 = geosphere::geodesic(st_coordinates(c1),d=dexpand,azi=theta1)[1:2]
+        c3 = geosphere::geodesic(st_coordinates(c1),d=dexpand,azi=theta2)[1:2]
         
         #Cone polygon
         cone <- rbind(st_coordinates(c1),c2,c3,st_coordinates(c1)) |>
