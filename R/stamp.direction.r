@@ -75,15 +75,7 @@
 # ---- End of roxygen documentation ----
 
 
-stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){  
-#===============================================================================
-# Directional Analysis functions
-#  - Centroid Angle
-#  - Cone Model
-#  - Minimum Bounding Rectangle (MBR) method
-#  - Modified Cone model
-#===============================================================================
-  
+stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){
   #Compute function results based on input method.
   crs_orig <- st_crs(stmp)
   stmp <- st_transform(stmp,crs=4326)
@@ -93,18 +85,28 @@ stamp.direction <- function(stmp,dir.mode="CentroidAngle",ndir=4,group=FALSE){
                  ConeModel = ConeModel(stmp,ndir),
                  MBRModel = MBRModel(stmp),
                  #ModConeModel = ModConeModel(stmp,ndir),
-                 stop(paste("The direction method is does not exist: ",dir.mode)))
+                 stop(paste("The direction method does not exist: ",dir.mode)))
   
   stmp <- st_transform(stmp,crs=crs_orig)
   return(stmp)  
-  
+}
+
+#===============================================================================
+# Directional Analysis functions
+#  - Centroid Angle
+#  - Cone Model
+#  - Minimum Bounding Rectangle (MBR) method
+#  - Modified Cone model
+#===============================================================================
+    
 #----- Centroid Angle Function JED SF FIX -------------------------------------------------
 CentroidAngle <- function(stmp,group=FALSE){
   stmp$CENDIR <- NA
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) > 1){   #no movement for individual events
+    # Do not perform if: (i) no movement for individual events or (ii) multiple events in group only exist in one period
+    if (length(ind) > 1 & any(!is.na(stmp$id1[ind])) & any(!is.na(stmp$id2[ind]))){   
       #Assumes that all T1 events in a group form the basis of the centroid.
       #  i.e., does not separate stable, from concentration, or displacement.
       #  Also, does not account for problems arising from multiple stable events.
@@ -114,7 +116,6 @@ CentroidAngle <- function(stmp,group=FALSE){
         for (j in ind){
           #Compute Centroid Angle
           c2 <- suppressWarnings(st_centroid(st_geometry(stmp[j,])))
-          
           temp <- lwgeom::st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
           
           if (temp < 0){temp <- 360 + temp}
@@ -125,6 +126,7 @@ CentroidAngle <- function(stmp,group=FALSE){
         #Compute Centroid Angle
         c2 <- suppressWarnings(st_centroid(st_union(t2.base)))
         temp <- lwgeom::st_geod_azimuth(st_sfc(c(c1,c2)))*180/pi
+        
         if (temp < 0){temp <- 360 + temp}
         stmp$CENDIR[ind] <- temp  
       }
@@ -154,7 +156,8 @@ ConeModel <- function(stmp,ndir=4){
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) > 1){   #no movement for individual events
+    # Do not perform if: (i) no movement for individual events or (ii) multiple events in group only exist in one period
+    if (length(ind) > 1 & any(!is.na(stmp$id1[ind])) & any(!is.na(stmp$id2[ind]))){   
       #Assumes that all T1 events in a group form the basis of the centroid.
       #  i.e., does not separate stable, from concentration, or displacement.
       #  Also, does not account for problems arising from multiple stable events.
@@ -180,10 +183,9 @@ ConeModel <- function(stmp,ndir=4){
         #loop through polys in each group and compute area in each cone
         for (k in 1:length(ind)){
           into <- st_intersection(cone,stmp[ind[k],])
-          if (is.null(into) == FALSE) {
+          if (nrow(st_as_sf(into)) > 0) { # convert to sf from sfc to check rows in dataframe
             stmp[ind[k],cols[j]] <- st_area(into)
-            }
-          else {
+            } else {
             stmp[ind[k],cols[j]] <- 0
             }
           }
@@ -209,7 +211,7 @@ MBRModel <- function(stmp){
   grps <- unique(stmp$GROUP)
   for (i in grps){
     ind <- which(stmp$GROUP == i)
-    if (length(ind) < 2){ next} #no movement for individual events
+    if (length(ind) < 2){next} #no movement for individual events
     t1.base <- stmp[which(stmp$GROUP == i & is.na(stmp$id1) == FALSE),]
     t1.bbox <- st_bbox(t1.base)
     
@@ -347,7 +349,7 @@ ModConeModel <- function(stmp,ndir=4){
 
 #============= End of Directional Analysis Functions============================
   
-}
+
 
 
 
