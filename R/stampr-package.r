@@ -19,12 +19,12 @@
 #' Robertson, C., Nelson, T., Boots, B., and Wulder, M. (2007) STAMP: Spatial-temporal analysis of moving polygons
 #'  \emph{Journal of Geographical Systems}, 9:207-227.
 #' Long, J., Robertson, C., Nelson, T. (2018) stampr: Spatial-Temporal Analysis of Moving Polygons in R \emph{Journal of Statistical Software}. Code Snippets, 84(1), 1–19.
-#'
-#' @import sf 
-#' @import lwgeom 
+#' 
+#' @import sf
 #' @import spdep
 #' @import dplyr
-#' @import geosphere
+#' @importFrom lwgeom st_geod_azimuth
+#' @importFrom geosphere geodesic
 #' @importFrom grDevices palette rainbow
 #' @importFrom graphics lcm text
 #' @importFrom rlang .data
