@@ -1,0 +1,49 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# stampr
+
+<!-- badges: start -->
+
+![stampr CRAN version](http://www.r-pkg.org/badges/version/stampr)
+![stampr Age](https://rpkg.net/pub-age/stampr/blue) [![stampr
+downloads](https://cranlogs.r-pkg.org/badges/last-month/stampr)](https://cran.r-project.org/package=stampr)
+<!-- badges: end -->
+
+The stampr package implments methods for spatial-temporal analysis of
+moving polygons (STAMP) which can be used to understand types of polygon
+changes and perform distance and directional analysis of polygon
+movement. The STAMP method is widely applicable in environmental
+applications and has been used to study animal home range and species
+distribution changes, the movement of objects such as forest fires and
+storm boundaries, and other dynamic features like dune formations.
+
+For more information on the methods used within read the documentation,
+but also consult the two papers that can be cited when using the
+package:
+
+Robertson, C., Nelson, T.A., Boots, B., Wulder, M.A. (2007) STAMP:
+Spatial-temporal analysis of moving polygons. Journal of Geographical
+Systems. 9:207-227. [Article
+Link](https://doi.org/10.1007/s10109-007-0044-2)
+
+Long, J., Robertson, C., Nelson, T. (2018). stampr: Spatial-Temporal
+Analysis of Moving Polygons in R. Journal of Statistical Software, Code
+Snippets, 84(1), [article link](https://doi.org/10.18637/jss.v084.c01)
+
+## Installation
+
+You can install the latest (under development version) of stampr from
+github:
+
+``` r
+devtools::install_github("jedalong/stampr")
+```
+
+To download the latest version from CRAN:
+
+``` r
+install.packages('stampr')
+```
+
+— END —
